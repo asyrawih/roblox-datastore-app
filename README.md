@@ -140,6 +140,21 @@ If you get a network error, check the following:
 
 Use the "Test Connection" button in the Settings panel to verify your API key and Universe ID are working correctly. This will show you the exact error message if something is wrong.
 
+## Creating Releases
+
+Releases are automatically built and published using GitHub Actions.
+
+### For Maintainers
+
+Create a new release:
+```bash
+./scripts/create-release.sh 1.0.0
+git push origin main
+git push origin v1.0.0
+```
+
+This triggers automated builds for all platforms. See [RELEASE.md](RELEASE.md) for details.
+
 ## Tech Stack
 
 - **Electron** - Desktop app framework
@@ -149,7 +164,7 @@ Use the "Test Connection" button in the Settings panel to verify your API key an
 - **Tailwind CSS** - Styling
 - **Axios** - HTTP client
 - **Lucide React** - Icons
-- **@uiw/react-json-view** - JSON viewer
+- **Monaco Editor** - Advanced JSON editing
 
 ## Project Structure
 
