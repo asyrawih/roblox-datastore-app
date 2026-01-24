@@ -47,9 +47,10 @@
   "main": "dist-electron/main.js",
   "build": {
     "appId": "com.roblox.datastore-editor",
-    "productName": "Kelas Malam DataStore Editor",
+    "productName": "Roblox DataStore Editor",
     "copyright": "Copyright © 2024",
     "publish": null,
+    "generateUpdatesFilesForAllChannels": false,
     "directories": {
       "output": "release/${version}"
     },
@@ -110,7 +111,8 @@
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist"
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "notarize": false
     },
     "dmg": {
       "sign": false,
