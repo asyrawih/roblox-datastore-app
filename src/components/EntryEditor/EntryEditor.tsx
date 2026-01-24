@@ -1,0 +1,340 @@
+import { useState, useEffect } from 'react';
+import { Key, Plus, Trash2, Loader2, AlertCircle, Save, RefreshCw } from 'lucide-react';
+import { robloxAPI } from '../../services/roblox-api';
+import { DataStoreEntry } from '../../types/datastore';
+import JsonView from '@uiw/react-json-view';
+
+interface EntryEditorProps {
+  datastoreName: string;
+}
+
+export function EntryEditor({ datastoreName }: EntryEditorProps) {
+  const [entries, setEntries] = useState<string[]>([]);
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [entryData, setEntryData] = useState<DataStoreEntry | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [scope, setScope] = useState('global');
+  const [searchPrefix, setSearchPrefix] = useState('');
+  const [newKey, setNewKey] = useState('');
+  const [editMode, setEditMode] = useState(false);
+  const [editValue, setEditValue] = useState('');
+
+  const loadEntries = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await robloxAPI.listEntries(
+        datastoreName,
+        scope,
+        searchPrefix || undefined
+      );
+      setEntries(response.keys?.map((k) => k.key) || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load entries');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadEntry = async (key: string) => {
+    setLoading(true);
+    setError(null);
+    setEditMode(false);
+    try {
+      const response = await robloxAPI.getEntry(datastoreName, key, scope);
+      setEntryData({
+        key,
+        value: response.value,
+        version: response.version,
+        userIds: response.userIds,
+        attributes: response.attributes,
+      });
+      setEditValue(JSON.stringify(response.value, null, 2));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load entry');
+      setEntryData(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveEntry = async () => {
+    if (!selectedKey && !newKey) return;
+
+    setSaving(true);
+    setError(null);
+    try {
+      const parsedValue = JSON.parse(editValue);
+      const keyToSave = newKey || selectedKey!;
+
+      await robloxAPI.setEntry(
+        datastoreName,
+        keyToSave,
+        parsedValue,
+        scope,
+        entryData?.userIds,
+        entryData?.attributes
+      );
+
+      setEditMode(false);
+      setNewKey('');
+
+      if (newKey) {
+        await loadEntries();
+        setSelectedKey(newKey);
+        await loadEntry(newKey);
+      } else {
+        await loadEntry(selectedKey!);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save entry');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const deleteEntry = async (key: string) => {
+    if (!confirm(`Are you sure you want to delete "${key}"?`)) return;
+
+    setLoading(true);
+    setError(null);
+    try {
+      await robloxAPI.deleteEntry(datastoreName, key, scope);
+      setSelectedKey(null);
+      setEntryData(null);
+      await loadEntries();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to delete entry');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadEntries();
+  }, [datastoreName, scope]);
+
+  return (
+    <div className="flex h-full">
+      {/* Entry List */}
+      <div className="w-80 flex-shrink-0 border-r border-zinc-800 bg-zinc-900">
+        <div className="border-b border-zinc-800 p-4">
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-zinc-200">
+            <Key className="h-4 w-4" />
+            Entries
+          </h3>
+          <div className="space-y-2">
+            <div>
+              <label className="mb-1 block text-xs text-zinc-400">Scope</label>
+              <input
+                type="text"
+                value={scope}
+                onChange={(e) => setScope(e.target.value)}
+                placeholder="global"
+                className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
+            <input
+              type="text"
+              value={searchPrefix}
+              onChange={(e) => setSearchPrefix(e.target.value)}
+              placeholder="Search by prefix..."
+              className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            />
+            <button
+              onClick={loadEntries}
+              disabled={loading}
+              className="w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+            >
+              <RefreshCw className="inline h-4 w-4 mr-1" />
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto">
+          {loading && (
+            <div className="flex items-center justify-center p-8">
+              <Loader2 className="h-6 w-6 animate-spin text-indigo-500" />
+            </div>
+          )}
+
+          {!loading && entries.length === 0 && (
+            <div className="p-4 text-center text-sm text-zinc-500">
+              No entries found
+            </div>
+          )}
+
+          {!loading && entries.length > 0 && (
+            <div className="divide-y divide-zinc-800">
+              {entries.map((key) => (
+                <div
+                  key={key}
+                  className={`flex items-center justify-between px-4 py-2.5 ${
+                    selectedKey === key ? 'bg-zinc-800' : ''
+                  }`}
+                >
+                  <button
+                    onClick={() => {
+                      setSelectedKey(key);
+                      loadEntry(key);
+                      setNewKey('');
+                    }}
+                    className="flex-1 text-left text-sm text-zinc-200 hover:text-zinc-100"
+                  >
+                    {key}
+                  </button>
+                  <button
+                    onClick={() => deleteEntry(key)}
+                    className="text-red-400 hover:text-red-300"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="border-t border-zinc-800 p-4">
+          <button
+            onClick={() => {
+              setSelectedKey(null);
+              setEntryData(null);
+              setEditMode(true);
+              setEditValue('{}');
+              setNewKey('');
+            }}
+            className="flex w-full items-center justify-center gap-2 rounded-md bg-green-600 px-3 py-2 text-sm font-medium text-white hover:bg-green-500"
+          >
+            <Plus className="h-4 w-4" />
+            New Entry
+          </button>
+        </div>
+      </div>
+
+      {/* Entry Details */}
+      <div className="flex-1 overflow-y-auto bg-zinc-950 p-6">
+        {error && (
+          <div className="mb-4 flex items-start gap-2 rounded-md border border-red-800 bg-red-950/50 p-3 text-sm text-red-400">
+            <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {!selectedKey && !editMode && (
+          <div className="flex h-full items-center justify-center text-zinc-500">
+            Select an entry or create a new one
+          </div>
+        )}
+
+        {editMode && (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-zinc-200">
+              {newKey ? 'Edit Entry' : 'New Entry'}
+            </h3>
+
+            {!selectedKey && (
+              <div>
+                <label className="mb-2 block text-sm font-medium text-zinc-300">
+                  Entry Key
+                </label>
+                <input
+                  type="text"
+                  value={newKey}
+                  onChange={(e) => setNewKey(e.target.value)}
+                  placeholder="Enter key name..."
+                  className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+              </div>
+            )}
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-zinc-300">
+                Value (JSON)
+              </label>
+              <textarea
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                rows={15}
+                className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 font-mono text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={saveEntry}
+                disabled={saving || (!newKey && !selectedKey)}
+                className="flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
+              >
+                <Save className="h-4 w-4" />
+                {saving ? 'Saving...' : 'Save'}
+              </button>
+              <button
+                onClick={() => {
+                  setEditMode(false);
+                  setNewKey('');
+                }}
+                className="rounded-md border border-zinc-700 px-4 py-2 text-sm hover:bg-zinc-900"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!editMode && entryData && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-zinc-200">{entryData.key}</h3>
+              <button
+                onClick={() => setEditMode(true)}
+                className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500"
+              >
+                Edit
+              </button>
+            </div>
+
+            <div className="space-y-2 rounded-md border border-zinc-800 bg-zinc-900 p-3 text-xs">
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Scope:</span>
+                <span className="text-zinc-200">{scope}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Key:</span>
+                <span className="text-zinc-200">{entryData.key}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-zinc-400">Version:</span>
+                <span className="text-zinc-200">{entryData.version}</span>
+              </div>
+              {entryData.userIds && entryData.userIds.length > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-zinc-400">User IDs:</span>
+                  <span className="text-zinc-200">{entryData.userIds.join(', ')}</span>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <h4 className="mb-2 text-sm font-medium text-zinc-300">Value:</h4>
+              <div className="rounded-md border border-zinc-800 bg-zinc-900 p-4">
+                <JsonView
+                  value={entryData.value as object}
+                  displayDataTypes={false}
+                  displayObjectSize={false}
+                  style={{
+                    backgroundColor: 'transparent',
+                    fontSize: '13px',
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
