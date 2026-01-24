@@ -16,10 +16,29 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [scope, setScope] = useState('global');
+  const [scopes, setScopes] = useState<string[]>(['global']);
+  const [loadingScopes, setLoadingScopes] = useState(false);
   const [searchPrefix, setSearchPrefix] = useState('');
   const [newKey, setNewKey] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [editValue, setEditValue] = useState('');
+
+  const loadScopes = async () => {
+    setLoadingScopes(true);
+    try {
+      const scopeList = await robloxAPI.listScopes(datastoreName);
+      setScopes(scopeList);
+      // If current scope is not in the list, reset to global
+      if (!scopeList.includes(scope)) {
+        setScope('global');
+      }
+    } catch (err) {
+      console.error('Failed to load scopes:', err);
+      setScopes(['global']);
+    } finally {
+      setLoadingScopes(false);
+    }
+  };
 
   const loadEntries = async () => {
     setLoading(true);
@@ -113,8 +132,13 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
   };
 
   useEffect(() => {
+    loadScopes();
     loadEntries();
-  }, [datastoreName, scope]);
+  }, [datastoreName]);
+
+  useEffect(() => {
+    loadEntries();
+  }, [scope]);
 
   return (
     <div className="flex h-full">
@@ -128,13 +152,25 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
           <div className="space-y-2">
             <div>
               <label className="mb-1 block text-xs text-zinc-400">Scope</label>
-              <input
-                type="text"
+              <select
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
-                placeholder="global"
-                className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              />
+                disabled={loadingScopes}
+                className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50"
+              >
+                {scopes.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={loadScopes}
+                disabled={loadingScopes}
+                className="mt-1 w-full rounded-md border border-zinc-700 px-2 py-1 text-xs hover:bg-zinc-900 disabled:opacity-50"
+              >
+                {loadingScopes ? 'Loading...' : 'Refresh Scopes'}
+              </button>
             </div>
             <input
               type="text"
@@ -149,7 +185,7 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
               className="w-full rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-50"
             >
               <RefreshCw className="inline h-4 w-4 mr-1" />
-              Refresh
+              Refresh Entries
             </button>
           </div>
         </div>

@@ -178,6 +178,46 @@ class RobloxDataStoreAPI {
       }
     );
   }
+
+  async listScopes(datastoreName: string, limit: number = 100): Promise<string[]> {
+    if (!this.client || !this.config) {
+      throw new Error('API not initialized');
+    }
+
+    try {
+      // The API doesn't have a direct endpoint for listing scopes
+      // We need to use the list-datastore-entries-v2 endpoint which shows scope/key pairs
+      const response = await this.client.get(
+        `/universes/${this.config.universeId}/standard-datastores/datastore/entries`,
+        {
+          params: {
+            datastoreName,
+            allScopes: true,
+            limit,
+          },
+        }
+      );
+
+      // Extract unique scopes from the keys
+      const scopes = new Set<string>();
+      if (response.data.keys) {
+        response.data.keys.forEach((entry: { scope?: string }) => {
+          if (entry.scope) {
+            scopes.add(entry.scope);
+          }
+        });
+      }
+
+      // Always include 'global' as an option
+      scopes.add('global');
+
+      return Array.from(scopes).sort();
+    } catch (error: any) {
+      console.error('Error listing scopes:', error.response?.data || error.message);
+      // If the API call fails, return at least the global scope
+      return ['global'];
+    }
+  }
 }
 
 export const robloxAPI = new RobloxDataStoreAPI();
