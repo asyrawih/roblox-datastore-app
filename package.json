@@ -2,7 +2,7 @@
   "name": "roblox-datastore-app",
   "productName": "Roblox DataStore Editor",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A desktop application for managing Roblox DataStores using the Open Cloud API",
   "author": "Your Name",
   "type": "module",
