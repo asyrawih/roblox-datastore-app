@@ -9,10 +9,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
-    "build:win": "npm run build -- --win --x64 --ia32",
-    "build:win-arm": "npm run build -- --win --arm64",
+    "build:win": "npm run build -- --win --x64",
     "build:mac": "npm run build -- --mac --x64 --arm64",
-    "build:all": "npm run build -- --win --mac --x64 --ia32 --arm64",
+    "build:all": "npm run build -- --win --mac --x64 --arm64",
     "icons": "bash scripts/create-icons-simple.sh && node scripts/create-ico-v2.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
