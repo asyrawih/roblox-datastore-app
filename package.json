@@ -78,7 +78,7 @@
         }
       ],
       "icon": "build/icon.ico",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "RobloxDataStoreEditor-${version}-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -106,7 +106,7 @@
       ],
       "category": "public.app-category.developer-tools",
       "icon": "build/icon.icns",
-      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "artifactName": "RobloxDataStoreEditor-${version}-${arch}.${ext}",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
