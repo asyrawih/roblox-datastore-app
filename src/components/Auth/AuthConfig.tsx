@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Settings, Key, Globe, CheckCircle, XCircle } from 'lucide-react';
+import { Settings, Key, Globe, CheckCircle, XCircle, Sun, Moon } from 'lucide-react';
 import { ApiConfig } from '../../types/datastore';
 import { robloxAPI } from '../../services/roblox-api';
+import { useTheme } from '../../contexts/ThemeContext';
 
 interface AuthConfigProps {
   config: ApiConfig | null;
@@ -10,6 +11,7 @@ interface AuthConfigProps {
 }
 
 export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
+  const { theme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(!config);
   const [apiKey, setApiKey] = useState(config?.apiKey || '');
   const [universeId, setUniverseId] = useState(config?.universeId || '');
@@ -75,13 +77,22 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
               </span>
             )}
           </div>
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-2 rounded-md border border-zinc-700 px-3 py-1.5 text-sm hover:bg-zinc-800"
-          >
-            <Settings className="h-4 w-4" />
-            Settings
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 rounded-md border border-zinc-700 dark:border-zinc-700 border-gray-300 px-3 py-1.5 text-sm hover:bg-zinc-800 dark:hover:bg-zinc-800 hover:bg-gray-100"
+              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex items-center gap-2 rounded-md border border-zinc-700 dark:border-zinc-700 border-gray-300 px-3 py-1.5 text-sm hover:bg-zinc-800 dark:hover:bg-zinc-800 hover:bg-gray-100"
+            >
+              <Settings className="h-4 w-4" />
+              Settings
+            </button>
+          </div>
         </div>
 
         {isOpen && (

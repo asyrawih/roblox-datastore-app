@@ -1,15 +1,24 @@
 {
   "name": "roblox-datastore-app",
+  "productName": "Roblox DataStore Editor",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A desktop application for managing Roblox DataStores using the Open Cloud API",
+  "author": "Your Name",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
+    "build:win": "npm run build -- --win --x64 --ia32",
+    "build:win-arm": "npm run build -- --win --arm64",
+    "build:mac": "npm run build -- --mac --x64 --arm64",
+    "build:all": "npm run build -- --win --mac --x64 --ia32 --arm64",
+    "icons": "bash scripts/create-icons-simple.sh && node scripts/create-ico-v2.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "@uiw/react-json-view": "^2.0.0-alpha.41",
     "axios": "^1.13.2",
     "lucide-react": "^0.563.0",
@@ -28,11 +37,109 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "png2icons": "^2.0.1",
     "tailwindcss": "^4.1.18",
+    "to-ico": "^1.1.5",
     "typescript": "5.5.4",
     "vite": "^5.1.6",
     "vite-plugin-electron": "^0.28.6",
     "vite-plugin-electron-renderer": "^0.14.5"
   },
-  "main": "dist-electron/main.js"
+  "main": "dist-electron/main.js",
+  "build": {
+    "appId": "com.roblox.datastore-editor",
+    "productName": "Kelas Malam DataStore Editor",
+    "copyright": "Copyright © 2024",
+    "directories": {
+      "output": "release/${version}"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Roblox DataStore Editor"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.developer-tools",
+      "icon": "build/icon.icns",
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "title": "${productName} ${version}",
+      "icon": "build/icon.icns",
+      "background": "build/background.png",
+      "window": {
+        "width": 540,
+        "height": 380
+      }
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Development",
+      "icon": "build/icons"
+    }
+  }
 }

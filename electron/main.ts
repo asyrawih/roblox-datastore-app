@@ -26,6 +26,7 @@ let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
+    title: 'Kelas Malam DataStore Editor',
     width: 1200,
     height: 800,
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),

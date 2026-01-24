@@ -2,13 +2,15 @@ import { useState, useEffect } from 'react';
 import { Key, Plus, Trash2, Loader2, AlertCircle, Save, RefreshCw } from 'lucide-react';
 import { robloxAPI } from '../../services/roblox-api';
 import { DataStoreEntry } from '../../types/datastore';
-import JsonView from '@uiw/react-json-view';
+import Editor from '@monaco-editor/react';
+import { useTheme } from '../../contexts/ThemeContext';
 
 interface EntryEditorProps {
   datastoreName: string;
 }
 
 export function EntryEditor({ datastoreName }: EntryEditorProps) {
+  const { theme } = useTheme();
   const [entries, setEntries] = useState<string[]>([]);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [entryData, setEntryData] = useState<DataStoreEntry | null>(null);
@@ -288,15 +290,26 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
             )}
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-zinc-300">
+              <label className="mb-2 block text-sm font-medium text-zinc-300 dark:text-zinc-300 text-gray-700">
                 Value (JSON)
               </label>
-              <textarea
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                rows={15}
-                className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 font-mono text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              />
+              <div className="h-96 rounded-md border border-zinc-700 dark:border-zinc-700 border-gray-300 overflow-hidden">
+                <Editor
+                  height="100%"
+                  defaultLanguage="json"
+                  value={editValue}
+                  onChange={(value) => setEditValue(value || '')}
+                  theme={theme === 'dark' ? 'vs-dark' : 'vs-light'}
+                  options={{
+                    minimap: { enabled: false },
+                    fontSize: 13,
+                    wordWrap: 'on',
+                    formatOnPaste: true,
+                    formatOnType: true,
+                    automaticLayout: true,
+                  }}
+                />
+              </div>
             </div>
 
             <div className="flex gap-2">
@@ -355,15 +368,19 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-medium text-zinc-300">Value:</h4>
-              <div className="rounded-md border border-zinc-800 bg-zinc-900 p-4">
-                <JsonView
-                  value={entryData.value as object}
-                  displayDataTypes={false}
-                  displayObjectSize={false}
-                  style={{
-                    backgroundColor: 'transparent',
-                    fontSize: '13px',
+              <h4 className="mb-2 text-sm font-medium text-zinc-300 dark:text-zinc-300 text-gray-700">Value:</h4>
+              <div className="h-96 rounded-md border border-zinc-800 dark:border-zinc-800 border-gray-300 overflow-hidden">
+                <Editor
+                  height="100%"
+                  defaultLanguage="json"
+                  value={JSON.stringify(entryData.value, null, 2)}
+                  theme={theme === 'dark' ? 'vs-dark' : 'vs-light'}
+                  options={{
+                    readOnly: true,
+                    minimap: { enabled: false },
+                    fontSize: 13,
+                    wordWrap: 'on',
+                    automaticLayout: true,
                   }}
                 />
               </div>

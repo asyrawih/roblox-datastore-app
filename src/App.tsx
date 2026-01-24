@@ -34,7 +34,7 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col bg-zinc-950 text-zinc-50">
+    <div className="flex h-screen w-full flex-col bg-white dark:bg-zinc-950 text-gray-900 dark:text-zinc-50">
       <AuthConfig
         config={config}
         onSave={handleSaveConfig}
@@ -50,14 +50,14 @@ function App() {
             {selectedDataStore ? (
               <EntryEditor datastoreName={selectedDataStore} />
             ) : (
-              <div className="flex h-full items-center justify-center text-zinc-500">
+              <div className="flex h-full items-center justify-center text-gray-500 dark:text-zinc-500">
                 Select a DataStore to view entries
               </div>
             )}
           </div>
         </div>
       ) : (
-        <div className="flex flex-1 items-center justify-center text-zinc-500">
+        <div className="flex flex-1 items-center justify-center text-gray-500 dark:text-zinc-500">
           Configure your API credentials to get started
         </div>
       )}

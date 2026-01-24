@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: light dark;
+}
+
 html,
 body,
 #root {
@@ -8,4 +12,26 @@ body,
 
 body {
   margin: 0;
+}
+
+/* Light theme colors */
+.light {
+  --bg-primary: 255 255 255;
+  --bg-secondary: 249 250 251;
+  --bg-tertiary: 243 244 246;
+  --border-primary: 229 231 235;
+  --text-primary: 17 24 39;
+  --text-secondary: 75 85 99;
+  --text-tertiary: 156 163 175;
+}
+
+/* Dark theme colors */
+.dark {
+  --bg-primary: 9 9 11;
+  --bg-secondary: 24 24 27;
+  --bg-tertiary: 39 39 42;
+  --border-primary: 63 63 70;
+  --text-primary: 250 250 250;
+  --text-secondary: 212 212 216;
+  --text-tertiary: 161 161 170;
 }

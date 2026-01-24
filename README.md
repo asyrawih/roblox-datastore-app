@@ -4,11 +4,28 @@ A desktop application for managing Roblox DataStores using the Open Cloud API. B
 
 ## Features
 
-- Connect to Roblox DataStores using Open Cloud API keys
-- Browse all DataStores in your universe
-- View, create, edit, and delete entries
-- JSON viewer with syntax highlighting
-- Search functionality for DataStores and entries
+- **Open Cloud API Integration**: Secure authentication with API keys
+- **DataStore Management**: Browse all DataStores in your universe
+- **Entry Operations**: View, create, edit, and delete entries
+- **Scope Support**: Automatic discovery and selection of DataStore scopes
+- **Advanced JSON Editor**: Monaco Editor (VSCode) with syntax highlighting and auto-completion
+- **Search & Filter**: Search DataStores and entries by prefix
+- **Theme Support**: Dark and light modes
+- **Cross-Platform**: Available for Windows (x64, x86, ARM64) and macOS (Intel, Apple Silicon)
+
+## Download
+
+### Pre-built Binaries (Recommended)
+Download the latest release for your platform:
+- **Windows**: `.exe` installer or portable version
+  - x64 (64-bit Windows)
+  - ia32 (32-bit Windows)
+  - ARM64 (ARM Windows devices)
+- **macOS**: `.dmg` disk image
+  - x64 (Intel Macs)
+  - ARM64 (Apple Silicon: M1, M2, M3)
+
+[Download Latest Release](#) *(Build and upload to GitHub Releases)*
 
 ## Getting Started
 
@@ -33,12 +50,26 @@ Run the app in development mode:
 npm run dev
 ```
 
-### Build
+### Building from Source
 
-Build the app for production:
+See [BUILD.md](BUILD.md) for detailed build instructions.
+
+**Quick builds:**
 ```bash
-npm run build
+# Windows (x64 and x86)
+npm run build:win
+
+# Windows ARM64
+npm run build:win-arm
+
+# macOS (Intel and Apple Silicon)
+npm run build:mac
+
+# All platforms
+npm run build:all
 ```
+
+Built files will be in `release/1.0.0/`
 
 ## Configuration
 
