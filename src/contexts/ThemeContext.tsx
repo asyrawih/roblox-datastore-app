@@ -12,13 +12,25 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = localStorage.getItem('theme');
-    return (saved as Theme) || 'dark';
+    const initialTheme = (saved as Theme) || 'dark';
+
+    // Immediately apply theme on initialization to prevent flash
+    document.documentElement.classList.remove('light', 'dark');
+    document.documentElement.classList.add(initialTheme);
+    document.documentElement.style.colorScheme = initialTheme;
+
+    return initialTheme;
   });
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
     document.documentElement.classList.remove('light', 'dark');
     document.documentElement.classList.add(theme);
+    // Set color-scheme to match the selected theme to prevent system override
+    document.documentElement.style.colorScheme = theme;
+
+    console.log('Theme changed to:', theme);
+    console.log('Document classes:', document.documentElement.className);
   }, [theme]);
 
   const toggleTheme = () => {

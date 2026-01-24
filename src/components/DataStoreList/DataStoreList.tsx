@@ -38,9 +38,9 @@ export function DataStoreList({ onSelectDataStore }: DataStoreListProps) {
   };
 
   return (
-    <div className="flex h-full flex-col border-r border-zinc-800 bg-zinc-900">
-      <div className="border-b border-zinc-800 p-4">
-        <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-zinc-200">
+    <div className="flex h-full flex-col border-r border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900">
+      <div className="border-b border-gray-200 dark:border-zinc-800 p-4">
+        <h2 className="mb-3 flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-zinc-200">
           <Database className="h-4 w-4" />
           DataStores
         </h2>
@@ -50,7 +50,7 @@ export function DataStoreList({ onSelectDataStore }: DataStoreListProps) {
             value={searchPrefix}
             onChange={(e) => setSearchPrefix(e.target.value)}
             placeholder="Search by prefix..."
-            className="flex-1 rounded-md border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="flex-1 rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-1.5 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
           <button
             type="submit"
@@ -77,21 +77,21 @@ export function DataStoreList({ onSelectDataStore }: DataStoreListProps) {
         )}
 
         {!loading && !error && datastores.length === 0 && (
-          <div className="p-4 text-center text-sm text-zinc-500">
+          <div className="p-4 text-center text-sm text-gray-500 dark:text-zinc-500">
             No datastores found
           </div>
         )}
 
         {!loading && !error && datastores.length > 0 && (
-          <div className="divide-y divide-zinc-800">
+          <div className="divide-y divide-gray-200 dark:divide-zinc-800">
             {datastores.map((ds) => (
               <button
                 key={ds.name}
                 onClick={() => onSelectDataStore(ds.name)}
-                className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-zinc-800"
+                className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-gray-100 dark:hover:bg-zinc-800"
               >
-                <span className="text-sm text-zinc-200">{ds.name}</span>
-                <ChevronRight className="h-4 w-4 text-zinc-500" />
+                <span className="text-sm text-gray-900 dark:text-zinc-200">{ds.name}</span>
+                <ChevronRight className="h-4 w-4 text-gray-400 dark:text-zinc-500" />
               </button>
             ))}
           </div>

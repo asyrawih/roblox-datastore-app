@@ -61,11 +61,11 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
   };
 
   return (
-    <div className="w-full border-b border-zinc-800 bg-zinc-900">
+    <div className="w-full border-b border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900">
       <div className="mx-auto max-w-6xl px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h1 className="text-xl font-semibold">Roblox DataStore Editor</h1>
+            <h1 className="text-xl font-semibold text-gray-900 dark:text-zinc-50">Roblox DataStore Editor</h1>
             {config && (
               <span className="rounded-full bg-green-500/10 px-2.5 py-1 text-xs text-green-400">
                 Connected
@@ -80,14 +80,14 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              className="flex items-center gap-2 rounded-md border border-zinc-700 dark:border-zinc-700 border-gray-300 px-3 py-1.5 text-sm hover:bg-zinc-800 dark:hover:bg-zinc-800 hover:bg-gray-100"
+              className="flex items-center gap-2 rounded-md border border-gray-300 dark:border-zinc-700 px-3 py-1.5 text-sm text-gray-700 dark:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800"
               title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
             >
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-2 rounded-md border border-zinc-700 dark:border-zinc-700 border-gray-300 px-3 py-1.5 text-sm hover:bg-zinc-800 dark:hover:bg-zinc-800 hover:bg-gray-100"
+              className="flex items-center gap-2 rounded-md border border-gray-300 dark:border-zinc-700 px-3 py-1.5 text-sm text-gray-700 dark:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800"
             >
               <Settings className="h-4 w-4" />
               Settings
@@ -96,9 +96,9 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
         </div>
 
         {isOpen && (
-          <form onSubmit={handleSubmit} className="mt-4 space-y-4 rounded-lg border border-zinc-800 bg-zinc-950 p-4">
+          <form onSubmit={handleSubmit} className="mt-4 space-y-4 rounded-lg border border-gray-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
             <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-zinc-300">
+              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-zinc-300">
                 <Key className="h-4 w-4" />
                 Open Cloud API Key
               </label>
@@ -107,10 +107,10 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
                 placeholder="Enter your Roblox Open Cloud API key"
-                className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 required
               />
-              <p className="mt-1 text-xs text-zinc-500">
+              <p className="mt-1 text-xs text-gray-500 dark:text-zinc-500">
                 Get your API key from{' '}
                 <a
                   href="https://create.roblox.com/credentials"
@@ -124,7 +124,7 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
             </div>
 
             <div>
-              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-zinc-300">
+              <label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-zinc-300">
                 <Globe className="h-4 w-4" />
                 Universe ID
               </label>
@@ -133,10 +133,10 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
                 value={universeId}
                 onChange={(e) => setUniverseId(e.target.value)}
                 placeholder="Enter your game's Universe ID"
-                className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 required
               />
-              <p className="mt-1 text-xs text-zinc-500">
+              <p className="mt-1 text-xs text-gray-500 dark:text-zinc-500">
                 Find this in your game's settings on Roblox
               </p>
             </div>

@@ -145,20 +145,20 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
   return (
     <div className="flex h-full">
       {/* Entry List */}
-      <div className="w-80 flex-shrink-0 border-r border-zinc-800 bg-zinc-900">
-        <div className="border-b border-zinc-800 p-4">
-          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-zinc-200">
+      <div className="w-80 flex-shrink-0 border-r border-gray-200 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900">
+        <div className="border-b border-gray-200 dark:border-zinc-800 p-4">
+          <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-zinc-200">
             <Key className="h-4 w-4" />
             Entries
           </h3>
           <div className="space-y-2">
             <div>
-              <label className="mb-1 block text-xs text-zinc-400">Scope</label>
+              <label className="mb-1 block text-xs text-gray-600 dark:text-zinc-400">Scope</label>
               <select
                 value={scope}
                 onChange={(e) => setScope(e.target.value)}
                 disabled={loadingScopes}
-                className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50"
+                className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-1.5 text-sm text-gray-900 dark:text-zinc-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50"
               >
                 {scopes.map((s) => (
                   <option key={s} value={s}>
@@ -169,7 +169,7 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
               <button
                 onClick={loadScopes}
                 disabled={loadingScopes}
-                className="mt-1 w-full rounded-md border border-zinc-700 px-2 py-1 text-xs hover:bg-zinc-900 disabled:opacity-50"
+                className="mt-1 w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-2 py-1 text-xs text-gray-900 dark:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800 disabled:opacity-50"
               >
                 {loadingScopes ? 'Loading...' : 'Refresh Scopes'}
               </button>
@@ -179,7 +179,7 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
               value={searchPrefix}
               onChange={(e) => setSearchPrefix(e.target.value)}
               placeholder="Search by prefix..."
-              className="w-full rounded-md border border-zinc-700 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+              className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-1.5 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
             <button
               onClick={loadEntries}
@@ -200,18 +200,18 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
           )}
 
           {!loading && entries.length === 0 && (
-            <div className="p-4 text-center text-sm text-zinc-500">
+            <div className="p-4 text-center text-sm text-gray-500 dark:text-zinc-500">
               No entries found
             </div>
           )}
 
           {!loading && entries.length > 0 && (
-            <div className="divide-y divide-zinc-800">
+            <div className="divide-y divide-gray-200 dark:divide-zinc-800">
               {entries.map((key) => (
                 <div
                   key={key}
                   className={`flex items-center justify-between px-4 py-2.5 ${
-                    selectedKey === key ? 'bg-zinc-800' : ''
+                    selectedKey === key ? 'bg-gray-100 dark:bg-zinc-800' : ''
                   }`}
                 >
                   <button
@@ -220,13 +220,13 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
                       loadEntry(key);
                       setNewKey('');
                     }}
-                    className="flex-1 text-left text-sm text-zinc-200 hover:text-zinc-100"
+                    className="flex-1 text-left text-sm text-gray-900 dark:text-zinc-200 hover:text-gray-700 dark:hover:text-zinc-100"
                   >
                     {key}
                   </button>
                   <button
                     onClick={() => deleteEntry(key)}
-                    className="text-red-400 hover:text-red-300"
+                    className="text-red-600 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300"
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -236,7 +236,7 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
           )}
         </div>
 
-        <div className="border-t border-zinc-800 p-4">
+        <div className="border-t border-gray-200 dark:border-zinc-800 p-4">
           <button
             onClick={() => {
               setSelectedKey(null);
@@ -254,7 +254,7 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
       </div>
 
       {/* Entry Details */}
-      <div className="flex-1 overflow-y-auto bg-zinc-950 p-6">
+      <div className="flex-1 overflow-y-auto bg-white dark:bg-zinc-950 p-6">
         {error && (
           <div className="mb-4 flex items-start gap-2 rounded-md border border-red-800 bg-red-950/50 p-3 text-sm text-red-400">
             <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
@@ -263,20 +263,20 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
         )}
 
         {!selectedKey && !editMode && (
-          <div className="flex h-full items-center justify-center text-zinc-500">
+          <div className="flex h-full items-center justify-center text-gray-500 dark:text-zinc-500">
             Select an entry or create a new one
           </div>
         )}
 
         {editMode && (
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-zinc-200">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-200">
               {newKey ? 'Edit Entry' : 'New Entry'}
             </h3>
 
             {!selectedKey && (
               <div>
-                <label className="mb-2 block text-sm font-medium text-zinc-300">
+                <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-zinc-300">
                   Entry Key
                 </label>
                 <input
@@ -284,16 +284,16 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
                   value={newKey}
                   onChange={(e) => setNewKey(e.target.value)}
                   placeholder="Enter key name..."
-                  className="w-full rounded-md border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                  className="w-full rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
               </div>
             )}
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-zinc-300 dark:text-zinc-300 text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-zinc-300">
                 Value (JSON)
               </label>
-              <div className="h-96 rounded-md border border-zinc-700 dark:border-zinc-700 border-gray-300 overflow-hidden">
+              <div className="h-96 rounded-md border border-gray-300 dark:border-zinc-700 overflow-hidden">
                 <Editor
                   height="100%"
                   defaultLanguage="json"
@@ -326,7 +326,7 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
                   setEditMode(false);
                   setNewKey('');
                 }}
-                className="rounded-md border border-zinc-700 px-4 py-2 text-sm hover:bg-zinc-900"
+                className="rounded-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-4 py-2 text-sm text-gray-900 dark:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800"
               >
                 Cancel
               </button>
@@ -337,7 +337,7 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
         {!editMode && entryData && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-zinc-200">{entryData.key}</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-zinc-200">{entryData.key}</h3>
               <button
                 onClick={() => setEditMode(true)}
                 className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500"
@@ -346,30 +346,30 @@ export function EntryEditor({ datastoreName }: EntryEditorProps) {
               </button>
             </div>
 
-            <div className="space-y-2 rounded-md border border-zinc-800 bg-zinc-900 p-3 text-xs">
+            <div className="space-y-2 rounded-md border border-gray-300 dark:border-zinc-800 bg-gray-50 dark:bg-zinc-900 p-3 text-xs">
               <div className="flex justify-between">
-                <span className="text-zinc-400">Scope:</span>
-                <span className="text-zinc-200">{scope}</span>
+                <span className="text-gray-600 dark:text-zinc-400">Scope:</span>
+                <span className="text-gray-900 dark:text-zinc-200">{scope}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Key:</span>
-                <span className="text-zinc-200">{entryData.key}</span>
+                <span className="text-gray-600 dark:text-zinc-400">Key:</span>
+                <span className="text-gray-900 dark:text-zinc-200">{entryData.key}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-zinc-400">Version:</span>
-                <span className="text-zinc-200">{entryData.version}</span>
+                <span className="text-gray-600 dark:text-zinc-400">Version:</span>
+                <span className="text-gray-900 dark:text-zinc-200">{entryData.version}</span>
               </div>
               {entryData.userIds && entryData.userIds.length > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-zinc-400">User IDs:</span>
-                  <span className="text-zinc-200">{entryData.userIds.join(', ')}</span>
+                  <span className="text-gray-600 dark:text-zinc-400">User IDs:</span>
+                  <span className="text-gray-900 dark:text-zinc-200">{entryData.userIds.join(', ')}</span>
                 </div>
               )}
             </div>
 
             <div>
-              <h4 className="mb-2 text-sm font-medium text-zinc-300 dark:text-zinc-300 text-gray-700">Value:</h4>
-              <div className="h-96 rounded-md border border-zinc-800 dark:border-zinc-800 border-gray-300 overflow-hidden">
+              <h4 className="mb-2 text-sm font-medium text-gray-700 dark:text-zinc-300">Value:</h4>
+              <div className="h-96 rounded-md border border-gray-300 dark:border-zinc-800 overflow-hidden">
                 <Editor
                   height="100%"
                   defaultLanguage="json"
