@@ -60,6 +60,7 @@ jobs:
         with:
           name: macos-builds
           path: |
+            release/**/*.dmg
             release/**/*.zip
           retention-days: 5
 
@@ -91,6 +92,7 @@ jobs:
           generate_release_notes: true
           files: |
             release/*/*.exe
+            release/*/*.dmg
             release/*/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
