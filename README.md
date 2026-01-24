@@ -25,7 +25,9 @@ Download the latest release for your platform:
   - x64 (Intel Macs)
   - ARM64 (Apple Silicon: M1, M2, M3)
 
-[Download Latest Release](#) *(Build and upload to GitHub Releases)*
+[📥 Download Latest Release](https://github.com/YOUR_USERNAME/YOUR_REPO/releases/latest)
+
+> **Note**: Replace `YOUR_USERNAME/YOUR_REPO` with your GitHub repository details.
 
 ## Getting Started
 
