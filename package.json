@@ -49,6 +49,7 @@
     "appId": "com.roblox.datastore-editor",
     "productName": "Kelas Malam DataStore Editor",
     "copyright": "Copyright © 2024",
+    "publish": null,
     "directories": {
       "output": "release/${version}"
     },
