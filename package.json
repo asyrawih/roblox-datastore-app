@@ -15,6 +15,8 @@
     "build:all": "npm run build -- --win --mac --x64 --arm64",
     "icons": "bash scripts/create-icons-simple.sh && node scripts/create-ico-v2.js",
     "icons:from-source": "powershell -ExecutionPolicy Bypass -File scripts/webp-to-png.ps1 -Source build/source-icon.webp -OutDir build/icons && node scripts/build-icons.js",
+    "release:signed": "powershell -ExecutionPolicy Bypass -File scripts/release-signed.ps1",
+    "release:signed:publish": "powershell -ExecutionPolicy Bypass -File scripts/release-signed.ps1 -CreateRelease",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
