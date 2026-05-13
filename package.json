@@ -4,7 +4,7 @@
   "private": true,
   "version": "1.0.4",
   "description": "A desktop application for managing Roblox DataStores using the Open Cloud API",
-  "author": "Your Name",
+  "author": "asyrawi",
   "type": "module",
   "scripts": {
     "dev": "vite",
