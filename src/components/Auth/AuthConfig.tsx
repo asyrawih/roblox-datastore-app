@@ -148,14 +148,14 @@ export function AuthConfig({ config, onSave, onClear }: AuthConfigProps) {
                   : 'border-red-800 bg-red-950/50 text-red-400'
               }`}>
                 {testResult.success ? (
-                  <CheckCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-4 w-4 shrink-0 mt-0.5" />
                 ) : (
-                  <XCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                  <XCircle className="h-4 w-4 shrink-0 mt-0.5" />
                 )}
                 <span>{testResult.message}</span>
               </div>
             )}
-
+flex
             <div className="flex gap-2">
               <button
                 type="button"

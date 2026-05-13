@@ -43,7 +43,7 @@ function App() {
 
       {config ? (
         <div className="flex flex-1 overflow-hidden">
-          <div className="w-80 flex-shrink-0">
+          <div className="w-80 shrink-0">
             <DataStoreList onSelectDataStore={setSelectedDataStore} />
           </div>
           <div className="flex-1">
