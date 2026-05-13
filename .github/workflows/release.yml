@@ -52,7 +52,7 @@ jobs:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: '${{ vars.SIGNPATH_ORGANIZATION_ID }}'
           project-slug: 'roblox-datastore-app'
-          signing-policy-slug: 'release-signing'
+          signing-policy-slug: 'KELAS_MALAM'
           artifact-configuration-slug: 'initial'
           github-artifact-id: '${{ needs.build-windows.outputs.artifact-id }}'
           wait-for-completion: true
