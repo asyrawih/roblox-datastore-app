@@ -63,19 +63,28 @@
       "dist-electron/**/*",
       "package.json"
     ],
+    "compression": "maximum",
+    "electronLanguages": [
+      "en-US",
+      "id"
+    ],
     "win": {
       "target": [
         {
           "target": "nsis",
           "arch": [
-            "x64",
-            "ia32",
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis",
+          "arch": [
             "arm64"
           ]
         }
       ],
       "icon": "build/icon.ico",
-      "artifactName": "RobloxDataStoreEditor-${version}-Setup.${ext}"
+      "artifactName": "RobloxDataStoreEditor-${version}-${arch}-Setup.${ext}"
     },
     "nsis": {
       "oneClick": false,
