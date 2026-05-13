@@ -50,8 +50,8 @@
   "build": {
     "appId": "com.roblox.datastore-editor",
     "productName": "Roblox DataStore Editor",
-    "copyright": "Copyright © 2024",
-    "publish": "KELAS MALAM",
+    "copyright": "Copyright © 2026 KELAS MALAM",
+    "publish": null,
     "generateUpdatesFilesForAllChannels": false,
     "directories": {
       "output": "release/${version}"
