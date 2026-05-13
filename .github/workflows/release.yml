@@ -46,17 +46,21 @@ jobs:
       contents: read
 
     steps:
-      - name: Submit signing request to SignPath
-        uses: signpath/github-action-submit-signing-request@v1.1
+      - name: Submit signing request to SignPath (with retry)
+        uses: Wandalen/wretry.action@v3.5.0
         with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: '${{ vars.SIGNPATH_ORGANIZATION_ID }}'
-          project-slug: 'roblox-datastore-app'
-          signing-policy-slug: 'release-signing'
-          artifact-configuration-slug: 'initial'
-          github-artifact-id: '${{ needs.build-windows.outputs.artifact-id }}'
-          wait-for-completion: true
-          output-artifact-directory: 'signed/'
+          action: signpath/github-action-submit-signing-request@v1.1
+          with: |
+            api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+            organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+            project-slug: roblox-datastore-app
+            signing-policy-slug: release-signing
+            artifact-configuration-slug: initial
+            github-artifact-id: ${{ needs.build-windows.outputs.artifact-id }}
+            wait-for-completion: true
+            output-artifact-directory: signed/
+          attempt_limit: 3
+          attempt_delay: 60000
 
       - name: Upload signed Windows artifacts
         uses: actions/upload-artifact@v4
