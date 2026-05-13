@@ -19,17 +19,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build Windows x64 (unsigned)
-        run: npm run build:win
+        run: bun run build:win
 
       - name: Upload unsigned Windows artifacts
         id: upload-unsigned
@@ -73,17 +72,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm ci
+        run: bun install --frozen-lockfile
 
       - name: Build macOS (Intel & Apple Silicon)
-        run: npm run build:mac
+        run: bun run build:mac
 
       - name: Upload macOS artifacts
         uses: actions/upload-artifact@v4
