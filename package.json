@@ -5,6 +5,7 @@
   "version": "1.0.4",
   "description": "A desktop application for managing Roblox DataStores using the Open Cloud API",
   "author": "asyrawi",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -50,7 +51,7 @@
     "appId": "com.roblox.datastore-editor",
     "productName": "Roblox DataStore Editor",
     "copyright": "Copyright © 2024",
-    "publish": null,
+    "publish": "KELAS MALAM",
     "generateUpdatesFilesForAllChannels": false,
     "directories": {
       "output": "release/${version}"

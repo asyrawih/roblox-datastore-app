@@ -7,10 +7,13 @@ on:
 
 permissions:
   contents: write
+  id-token: write # required for SignPath OIDC token
 
 jobs:
   build-windows:
     runs-on: windows-latest
+    outputs:
+      artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
 
     steps:
       - name: Checkout code
@@ -25,15 +28,42 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Windows x64
+      - name: Build Windows x64 (unsigned)
         run: npm run build:win
 
-      - name: Upload Windows artifacts
+      - name: Upload unsigned Windows artifacts
+        id: upload-unsigned
         uses: actions/upload-artifact@v4
         with:
-          name: windows-builds
-          path: |
-            release/*/*.exe
+          name: windows-unsigned
+          path: release/*/*.exe
+          retention-days: 5
+
+  sign-windows:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Submit signing request to SignPath
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '${{ vars.SIGNPATH_ORGANIZATION_ID }}'
+          project-slug: 'roblox-datastore-app'
+          signing-policy-slug: 'release-signing'
+          artifact-configuration-slug: 'initial'
+          github-artifact-id: '${{ needs.build-windows.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: 'signed/'
+
+      - name: Upload signed Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-signed
+          path: signed/*.exe
           retention-days: 5
 
   build-macos:
@@ -65,24 +95,24 @@ jobs:
           retention-days: 5
 
   release:
-    needs: [build-windows, build-macos]
+    needs: [sign-windows, build-macos]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Download Windows artifacts
+      - name: Download signed Windows artifacts
         uses: actions/download-artifact@v4
         with:
-          name: windows-builds
-          path: release/
+          name: windows-signed
+          path: release/windows/
 
       - name: Download macOS artifacts
         uses: actions/download-artifact@v4
         with:
           name: macos-builds
-          path: release/
+          path: release/macos/
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -91,8 +121,8 @@ jobs:
           prerelease: false
           generate_release_notes: true
           files: |
-            release/*/*.exe
-            release/*/*.dmg
-            release/*/*.zip
+            release/windows/*.exe
+            release/macos/**/*.dmg
+            release/macos/**/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
