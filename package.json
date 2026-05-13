@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
-    "build:win": "npm run build -- --win --x64",
+    "build:win": "npm run build -- --win",
     "build:mac": "npm run build -- --mac --x64 --arm64",
     "build:all": "npm run build -- --win --mac --x64 --arm64",
     "icons": "bash scripts/create-icons-simple.sh && node scripts/create-ico-v2.js",
@@ -72,18 +72,10 @@
             "ia32",
             "arm64"
           ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64",
-            "ia32",
-            "arm64"
-          ]
         }
       ],
       "icon": "build/icon.ico",
-      "artifactName": "RobloxDataStoreEditor-${version}-${arch}.${ext}"
+      "artifactName": "RobloxDataStoreEditor-${version}-Setup.${ext}"
     },
     "nsis": {
       "oneClick": false,
